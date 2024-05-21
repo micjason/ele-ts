@@ -1,0 +1,10 @@
+// 修改组件库内部样式
+
+// 1.自定义一个类名空间
+
+.m-choose-icon-dialog-body-height {
+    .el-dialog__body {
+        height: 400px;
+        overflow-y: auto;
+    }
+}

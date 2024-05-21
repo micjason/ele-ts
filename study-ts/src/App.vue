@@ -6,6 +6,7 @@
 </template>
 
 <style lang="scss">
+@import '@/styles/uni.scss';
 * {
   margin: 0;
   padding: 0;

@@ -1,14 +1,19 @@
 import { createRouter,createWebHashHistory,RouteRecordRaw } from "vue-router";
-import layout from "../pages/layout.vue";
-import container from '@/components/container/src/index.vue'
+import home from "@/pages/home.vue";
+import chooseIcon from '@/pages/chooseIcon/index.vue'
+import chooseCity from '@/pages/chooseCity/index.vue'
 const routes:Array<RouteRecordRaw>=[
     {
         path:'/',
-        component:container,
+        component:home,
         children:[
             {
-                path:'/',
-                component:layout
+                path:'/chooseIcon',
+                component:chooseIcon
+            },
+            {
+                path:'/chooseCity',
+                component:chooseCity
             }
         ]
     }
