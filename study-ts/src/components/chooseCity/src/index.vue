@@ -1,61 +1,88 @@
 <template>
-    <el-button @click="handleClick" type="primary">
-        <slot></slot>
-    </el-button>
+    <el-select v-model="province" clearable placeholder="请选择省份" size="large" style="width: 240px">
+        <el-option v-for="item in areas" :key="item.code" :label="item.name" :value="item.code" />
+    </el-select>
 
-    <el-dialog :title="title" v-model="visible">
-        <el-scrollbar height="400px">
-            <div class="container">
-                <div class="item" v-for="(item, index) in Object.keys(ElIcons)" :key="index">
-                    <div class="icon">
-                        <component :is="`el-icon${toLine(item)}`"></component>
-                    </div>
-                    <div class="text">{{ item }}</div>
-                </div>
-            </div>
-        </el-scrollbar>
-    </el-dialog>
+    <el-select v-model="city" clearable :disabled="!province" placeholder="请选择城市" size="large"
+        style="width: 240px; margin: 0 20px">
+        <el-option v-for="item in cityArray" :key="item.code" :label="item.name" :value="item.code" />
+    </el-select>
 
+    <el-select v-model="area" clearable :disabled="!province || !city" placeholder="请选择区域" size="large"
+        style="width: 240px">
+        <el-option v-for="item in areaArray" :key="item.code" :label="item.name" :value="item.code" />
+    </el-select>
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+import allDatas from '../lib/pca-code.json'
 
-import * as ElIcons from '@element-plus/icons-vue'
-import { toLine } from '@/utils/index.js'
-
-let props = defineProps<{
-    // 弹出框的标题
-    title: string
-}>()
-
-// 控制弹出框的显示隐藏
-let visible = defineModel()
-
-const handleClick = () => {
-    visible.value = !visible.value
+interface AreaItem {
+    name: string,
+    code: string,
+    children?: AreaItem[]
 }
 
+interface postData {
+    name: string,
+    code: string
+}
 
-</script>
+let areas = ref(allDatas)
+let province = ref<string>('')
+let cityArray = ref<AreaItem[]>([])
+let city = ref<string>('')
+let areaArray = ref<AreaItem[]>([])
+let area = ref<string>('')
 
-<style lang="scss" scoped>
-.container {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+watch(province, (province, prevProvince) => {
+    if (province) {
+        cityArray.value = areas.value.find((item) => {
+            return item.code === province
+        })!.children
+    }
+    if (province !== prevProvince) {
+        city.value = ''
+        area.value = ''
+    }
+})
 
-    .item {
-        width: 25%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-        cursor: pointer;
-
-        .icon {
-            font-size: 28px;
+watch(
+    () => city.value,
+    (city, prevCity) => {
+        if (city) {
+            areaArray.value = cityArray.value.find((item) => {
+                return item.code === city
+            })!.children!
+        }
+        if (city !== prevCity) {
+            area.value = ''
         }
     }
-}
-</style>
+)
+
+const emit = defineEmits(['change'])
+watch(area, val => {
+    if(!val) return
+    let provinceData: postData = {
+        code: province.value,
+        name: province.value && areas.value.find(item => item.code === province.value)!.name
+    }
+    let cityData: postData = {
+        code: city.value,
+        name: city.value && cityArray.value.find(item => item.code === city.value)!.name
+    }
+    let areaData: postData = {
+        code: val,
+        name: val && areaArray.value.find(item => item.code === val)!.name
+    }
+    emit('change',{
+        province:provinceData,
+        city:cityData,
+        area:areaData
+    })
+})
+</script>
+
+<style lang="scss" scoped></style>
