@@ -3,7 +3,7 @@
    <el-popover placement="bottom" :width="400" trigger="click">
       <template #reference>
          <el-badge :value="num" :max="maxNum">
-            <component :is="`el-icon${toLine(icon)}`"></component>
+            <component :is="`el-icon-${toLine(icon)}`"></component>
          </el-badge>
       </template>
       <slot name="list"></slot>

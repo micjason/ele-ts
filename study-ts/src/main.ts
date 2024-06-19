@@ -11,7 +11,7 @@ const app = createApp(App)
 
 // 全局注册图标 牺牲一点性能
 for (let i in Icons) {
-    app.component(`el-icon${toLine(i)}`,(Icons as any)[i])
+    app.component(`el-icon-${toLine(i)}`,(Icons as any)[i])
 }
 
 app.use(router).use(ElementPlus).use(mUI)

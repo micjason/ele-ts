@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="item" v-for="(item, index) in Object.keys(ElIcons)" :key="index">
                     <div class="icon">
-                        <component :is="`el-icon${toLine(item)}`"></component>
+                        <component :is="`el-icon-${toLine(item)}`"></component>
                     </div>
                     <div class="text">{{ item }}</div>
                 </div>

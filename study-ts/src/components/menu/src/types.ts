@@ -1,5 +1,6 @@
 export interface MenuItem {
-    icon?: string,
+    icon: string,
+    i?:any,
     name?: string,
     index: string,
     children?: MenuItem[]

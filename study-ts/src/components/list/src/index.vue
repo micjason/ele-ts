@@ -6,7 +6,7 @@
                <div class="container" v-for="(item1, index1) in item.content" :key="index1"
                   @click="clickItem(item1, index1)">
                   <div class="avatar" v-if="item1.avatar">
-                     <component :is="`el-icon${toLine(item1.avatar)}`"></component>
+                     <component :is="`el-icon-${toLine(item1.avatar)}`"></component>
                   </div>
 
                   <div class="content">
@@ -18,7 +18,7 @@
                <div v-for="(action, i) in actions" :key="i" class="a-item" :class="{ border: i !== actions.length }"
                   @click="clickAction(action, i)">
                   <div class="a-icon" v-if="action.icon">
-                     <component :is="`el-icon${toLine(action.icon)}`"></component>
+                     <component :is="`el-icon-${toLine(action.icon)}`"></component>
                   </div>
                </div>
             </el-scrollbar>
